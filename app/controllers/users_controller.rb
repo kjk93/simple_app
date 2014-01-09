@@ -12,7 +12,11 @@ class UsersController < ApplicationController
   end
 
   def new
-  	@user = User.new
+    if signed_in?
+      redirect_to root_url, notice: "Cannot create new user while signed in."
+    else
+      @user = User.new
+    end
   end
 
   def create
