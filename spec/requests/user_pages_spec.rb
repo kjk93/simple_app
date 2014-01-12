@@ -163,4 +163,20 @@ describe "User pages" do
 			specify {expect(user.reload).not_to be_admin}
 		end
 	end
+
+	describe "other signed in user" do
+		let(:user) {FactoryGirl.create(:user)}
+		let(:other) {FactoryGirl.create(:user)}
+
+		before {sign_in other}
+
+		describe "viewing users microposts" do
+			before do
+				10.times {FactoryGirl.create(:micropost, user: user)}
+				visit user_path(user)
+			end
+
+			it {should_not have_link('delete')}
+		end
+	end
 end
