@@ -28,6 +28,8 @@ describe "Static pages" do
         visit root_path
       end
 
+      it {should have_content("#{user.microposts.count} microposts")}
+
       it "should render the user's feed" do
         user.feed.each do |item|
           expect(page).to have_selector("li##{item.id}", text: item.content)
@@ -35,6 +37,19 @@ describe "Static pages" do
       end
     end
   end
+=begin
+  describe "pagination" do
+    let(:user) {FactoryGirl.create(:user)}
+    before(:all) {30.times {FactoryGirl.create(:micropost, user: user)}}
+    before(:each) {visit root_path}
+
+    it "should display all 30 posts" do
+      Micropost.paginate(page: 1).each do |micropost|
+        expect(page).to have_selector('li', text: micropost.content)
+      end
+    end
+  end
+=end
 
   describe "Help page" do
     before {visit help_path}
