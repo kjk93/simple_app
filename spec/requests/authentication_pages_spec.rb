@@ -39,16 +39,6 @@ describe "Authentication" do
 			it {should have_link('Sign out', href: signout_path)}
 			it {should_not have_link('Sign in', href: signin_path)}
 
-			describe "trying to create new user" do
-				before do
-					visit root_path
-					click_link "Sign up now!"
-				end
-
-				it {should have_content('Welcome to the Sample App')}
-				it {should have_selector('div.alert.alert-notice')}
-			end
-
 			describe "followed by signout" do
 				before {click_link "Sign out"}
 				it {should have_link("Sign in")}
@@ -90,6 +80,19 @@ describe "Authentication" do
 							expect(page).to have_title(user.name)
 						end
 					end
+				end
+			end
+
+			describe "in the Microposts controller" do
+
+				describe "submitting to the create action" do
+					before {post microposts_path}
+					specify {expect(response).to redirect_to(signin_path)}
+				end
+
+				describe "submitting to the destroy action" do
+					before {delete micropost_path(FactoryGirl.create(:micropost))}
+					specify {expect(response).to redirect_to(signin_path)}
 				end
 			end
 

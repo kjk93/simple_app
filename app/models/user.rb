@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+	has_many :microposts, dependent: :destroy
 	before_create :create_remember_token
 	has_secure_password
 	before_save {email.downcase!}
@@ -13,6 +14,11 @@ class User < ActiveRecord::Base
 
 	def User.encrypt(token)
 		Digest::SHA1.hexdigest(token.to_s)
+	end
+
+	def feed
+		#this is preliminary. See "Following users" for the full implimentation
+		Micropost.where("user_id = ?", id)
 	end
 
 	private
