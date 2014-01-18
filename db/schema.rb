@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20140113020900) do
     t.boolean  "admin",           default: false
   end
 
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
 end
