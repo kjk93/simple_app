@@ -169,14 +169,14 @@ describe User do
 
 			before do
 				@user.follow!(followed_user)
-				3.times {followed_user.micropost.create!(content: "Lorem ipsum")}
+				3.times {followed_user.microposts.create!(content: "Lorem ipsum")}
 			end
 
 			its(:feed) {should include(newer_micropost)}
 			its(:feed) {should include(older_micropost)}
 			its(:feed) {should_not include(unfollowed_post)}
 			its(:feed) do
-				followed_user.micropost.each do |micropost|
+				followed_user.microposts.each do |micropost|
 					should include(micropost)
 				end
 			end
